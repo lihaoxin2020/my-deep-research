@@ -9,7 +9,7 @@ import HistoryPage from './pages/HistoryPage';
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider resetCSS>
       <ApiProvider>
         <ResearchProvider>
           <Router>

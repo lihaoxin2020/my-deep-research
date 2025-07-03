@@ -42,9 +42,33 @@ const getDefaultModel = (provider: LLMProvider): string => {
   }
 };
 
+// Mock data for demonstration purposes
+const generateMockResponse = (query: string, maxDepth: number): ResearchResponse => {
+  return {
+    text: `# Research Report: ${query}\n\n## Introduction\nThis is a comprehensive research report on "${query}" with a research depth of ${maxDepth}.\n\n## Key Findings\n1. First major finding about ${query}\n2. Second major finding about the topic\n3. Third important insight discovered during research\n\n## Analysis\nThe analysis shows that this topic has significant implications in multiple domains. Further research could explore additional aspects.\n\n## Conclusion\nBased on the research conducted, we can conclude that ${query} is an important area with evolving understanding and applications.`,
+    bibliography: [
+      { title: "Understanding " + query, authors: "Smith, J. & Johnson, P.", year: "2024", url: "https://example.com/research1" },
+      { title: "Advanced Research on " + query, authors: "Williams, A.", year: "2023", url: "https://example.com/research2" },
+      { title: "The Future of " + query, authors: "Brown, M. et al.", year: "2024", url: "https://example.com/research3" }
+    ],
+    sources: [
+      { title: "Example Source 1", url: "https://example.com/source1", snippet: "This source provides valuable information about " + query },
+      { title: "Example Source 2", url: "https://example.com/source2", snippet: "Additional context and background on the topic" },
+      { title: "Example Source 3", url: "https://example.com/source3", snippet: "Latest developments and future directions" }
+    ]
+  };
+};
+
 export const conductResearch = async (request: ResearchRequest): Promise<ResearchResponse> => {
   const { query, apiConfig, maxDepth = 3 } = request;
   const model = apiConfig.model || getDefaultModel(apiConfig.provider);
+  
+  // For demo purposes, use mock data if API key starts with "demo" or "test"
+  if (apiConfig.apiKey.startsWith('demo') || apiConfig.apiKey.startsWith('test')) {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    return generateMockResponse(query, maxDepth);
+  }
   
   try {
     // This is a simplified implementation
